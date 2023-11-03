@@ -102,14 +102,6 @@ public class HandlerController extends Thread{
                                     bufferedWriter.newLine();
                                     bufferedWriter.flush();
                                 }
-//                                for (Client cl : SocketController.getClientInfors()){
-//                                    if((cl.getId()).equals(this.client.getId())) continue;
-//                                    bufferedWriter.write(cl.getId());
-//                                    bufferedWriter.newLine();
-//                                    bufferedWriter.write(cl.getName());
-//                                    bufferedWriter.newLine();
-//                                    bufferedWriter.flush();
-//                                }
 
 //                              //Gửi thông tin từ this client về các client khác
 //                                for (HandlerController handlerController : SocketController.getClientHandlers()) {

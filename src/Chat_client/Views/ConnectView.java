@@ -28,12 +28,6 @@ public class ConnectView {
             ipAddress = sc.next();
             System.out.print("Nhập port      : ");
             port = sc.nextInt();
-            // kiểm tra server có online hay k
-//            Socket sc = SocketController.serverOnline(ipAddress, port);
-//            if(sc != null){
-//                socketController = new SocketController(ipAddress, port);
-//            }
-//            else System.out.println("Không tồn tại socket");
             socketController = new SocketController(ipAddress, port);
         }
         else if(selection == 2){

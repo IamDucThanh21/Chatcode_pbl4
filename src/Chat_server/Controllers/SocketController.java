@@ -84,22 +84,22 @@ public class SocketController {
         }
     }
     public static void updateOnlineUser(HandlerController client){
-            try {
-                for (HandlerController handlerController : clients) {
-                    if (handlerController == client)
-                        continue;
-                    System.out.println(handlerController.getClient().getName() + " -> " + client.getClient().getName() );
-                    handlerController.getBufferedWriter().write("new user online");
-                    handlerController.getBufferedWriter().newLine();
-                    handlerController.getBufferedWriter().write(client.getClient().getId());
-                    handlerController.getBufferedWriter().newLine();
-                    handlerController.getBufferedWriter().write(client.getClient().getName());
-                    handlerController.getBufferedWriter().newLine();
-                    handlerController.getBufferedWriter().flush();
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+        try {
+            for (HandlerController handlerController : clients) {
+                if (handlerController == client)
+                    continue;
+                System.out.println(client.getClient().getName() + " -> " + handlerController.getClient().getName() );
+                handlerController.getBufferedWriter().write("new user online");
+                handlerController.getBufferedWriter().newLine();
+                handlerController.getBufferedWriter().write(client.getClient().getId());
+                handlerController.getBufferedWriter().newLine();
+                handlerController.getBufferedWriter().write(client.getClient().getName());
+                handlerController.getBufferedWriter().newLine();
+                handlerController.getBufferedWriter().flush();
             }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
     public static String getThisIP() {
         String ip = "";

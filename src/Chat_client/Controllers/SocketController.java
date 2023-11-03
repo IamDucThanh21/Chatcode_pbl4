@@ -19,7 +19,6 @@ public class SocketController {
     Socket socket;
     BufferedWriter bufferedWriter;
     BufferedReader bufferedReader;
-    Thread receiveAndProcessThread;
     Scanner sc = new Scanner(System.in);
     private ArrayList<Client> onlineUsers;
     public ArrayList<Room> allRooms;
@@ -41,7 +40,7 @@ public class SocketController {
             bufferedWriter = new BufferedWriter(new OutputStreamWriter(os, StandardCharsets.UTF_8));
         } catch (IOException e) {
             System.out.println("Không tồn tại server");
-            // throw new RuntimeException(e);
+            System.exit(0);
         }
         boolean rs =false;
         while (!rs){
@@ -121,56 +120,6 @@ public class SocketController {
                 System.exit(0);
             }
         }).start();
-//        () -> {
-//            try {
-//                while (true) {
-//                    String header = bufferedReader.readLine();
-//                    System.out.println("Header: " + header);
-//                    if (header == null)
-//                        throw new IOException();
-//                    switch (header) {
-//                        case "new user online": {
-//                            String Id_user = "không", Name_user = "không";
-//                            Id_user = bufferedReader.readLine();
-//                            Name_user = bufferedReader.readLine();
-//                            System.out.println(Id_user + " +++ " + Name_user);
-//                            Client clientVari = new Client(Id_user, Name_user);
-//                            onlineUsers.add(clientVari);
-//                            mainChatView.updateServerData();
-//                            mainChatView.updateUserOnlineList(onlineUsers);
-//                            break;
-//                        }
-//                        case "user quit": {
-//                            String Id_user = bufferedReader.readLine();
-//                            String Name_user = bufferedReader.readLine();
-//                            Client clientVari = new Client(Id_user, Name_user);
-//                            System.out.println(Id_user + " quit");
-//                            onlineUsers.remove(clientVari);
-//                            mainChatView.updateServerData();
-//                            mainChatView.updateUserOnlineList(onlineUsers);
-////                            for (Room room : allRooms) {
-////                                if (room.users.contains(whoQuit)) {
-////                                    Main.mainScreen.addNewMessage(room.id, "notify", whoQuit, "Đã thoát ứng dụng");
-////                                    room.users.remove(whoQuit);
-////                                }
-////                            }
-////                            Main.mainScreen.updateRoomUsersJList();
-//
-//                            break;
-//                        }
-//                    }
-//                }
-//            }catch (IOException e){
-//                System.out.println("Server đã đóng, ứng dụng sẽ thoát ngay lập tức!");
-//                try {
-//                    socket.close();
-//                } catch (IOException ex) {
-//                    throw new RuntimeException(ex);
-//                }
-//            }
-//            System.exit(0);
-//        });
-//        receiveAndProcessThread.start();
     }
     public void getOnlineUserss(){
         for(int i = 0; i < this.connectedServer.getConnectAccountCount(); i++ ){
