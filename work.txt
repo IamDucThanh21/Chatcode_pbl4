@@ -1,0 +1,5 @@
+- Công việc của server:
+	+ Chạy server
+	+ Kiểm tra các Client đang đăng nhập, kiểm tra SQL
+- Công việc của Client:
+	+ Đăng nhập, gửi thông tin đăng nhập cho server, server tự cập nhật dữ liệu

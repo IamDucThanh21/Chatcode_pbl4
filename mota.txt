@@ -1,0 +1,5 @@
+chạy server: show thông tin gồm:
+				Địa chỉ ip + port
+chạy client:
+1. thông báo nhập cổng port và địa chỉ ip
+2. Đăng nhập hoặc đăng kí
