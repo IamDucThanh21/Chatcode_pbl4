@@ -16,22 +16,37 @@ public class HandlerController extends Thread{
     private Socket socketHandler;
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
     private ArrayList<Client> clientList;
     private int port;
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
     public HandlerController(Socket clientSocket){
         try {
             this.client = new Client();
             this.socketHandler = clientSocket;
-            this.osHandler = socketHandler.getOutputStream();
-            this.isHandler = socketHandler.getInputStream();
-            this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(osHandler, StandardCharsets.UTF_8)); // viết riêng
-            this.bufferedReader = new BufferedReader(new InputStreamReader(isHandler, StandardCharsets.UTF_8)); // viết riêng
+            this.osHandler = this.socketHandler.getOutputStream();
+            this.isHandler = this.socketHandler.getInputStream();
+            this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(this.osHandler, StandardCharsets.UTF_8)); // viết riêng
+            this.bufferedReader = new BufferedReader(new InputStreamReader(this.isHandler, StandardCharsets.UTF_8)); // viết riêng
+            this.port = this.socketHandler.getPort();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
     public BufferedWriter getBufferedWriter() {
         return bufferedWriter;
+    }
+
+    public int getPort() {
+        return port;
     }
 
     @Override
@@ -41,7 +56,6 @@ public class HandlerController extends Thread{
                 String header = bufferedReader.readLine();
                 if(header == null) throw new IOException();
 
-                // ClientController clientController = new ClientController();
                 System.out.println("Header: " + header);
                 switch (header){
                     case "New login": {
@@ -70,7 +84,6 @@ public class HandlerController extends Thread{
                             }
                             else {
                                 this.client = ClientDAO.getClient(rs);
-                                this.client.setPort(socketHandler.getPort());
 
                                 String name = this.client.getName();
                                 System.out.println(name + " đăng nhập thành công");
@@ -96,28 +109,45 @@ public class HandlerController extends Thread{
                                 for (HandlerController handlerController : SocketController.getClientHandlers()) {
                                     if ((handlerController.getClient().getId()).equals(this.client.getId()))
                                         continue;
-                                    bufferedWriter.write(handlerController.getClient().getId());
-                                    bufferedWriter.newLine();
-                                    bufferedWriter.write(handlerController.getClient().getName());
-                                    bufferedWriter.newLine();
-                                    bufferedWriter.flush();
+                                    this.bufferedWriter.write(handlerController.getClient().getId());
+                                    this.bufferedWriter.newLine();
+                                    this.bufferedWriter.write(handlerController.getClient().getName());
+                                    this.bufferedWriter.newLine();
+                                    this.bufferedWriter.flush();
                                 }
-
 //                              //Gửi thông tin từ this client về các client khác
-//                                for (HandlerController handlerController : SocketController.getClientHandlers()) {
-//                                    if ((handlerController.getClient().getId()).equals(this.client.getId()))
-//                                        continue;
-//                                    handlerController.getBufferedWriter().write("new user online");
-//                                    handlerController.getBufferedWriter().newLine();
-//                                    handlerController.getBufferedWriter().write(this.client.getId());
-//                                    handlerController.getBufferedWriter().newLine();
-//                                    handlerController.getBufferedWriter().write(this.client.getName());
-//                                    handlerController.getBufferedWriter().newLine();
-//                                    handlerController.getBufferedWriter().flush();
-//                                }
-                                SocketController.updateOnlineUser(this);
+                                for (HandlerController handlerController : SocketController.getClientHandlers()) {
+
+                                    if ((handlerController.getClient().getId()).equals(this.client.getId()))
+                                        continue;
+                                    handlerController.getBufferedWriter().write("new user online");
+                                    handlerController.getBufferedWriter().newLine();
+                                    handlerController.getBufferedWriter().write("" + (SocketController.getClientSize() - 1));
+                                    handlerController.getBufferedWriter().newLine();
+                                    handlerController.getBufferedWriter().write(this.client.getId());
+                                    handlerController.getBufferedWriter().newLine();
+                                    handlerController.getBufferedWriter().write(this.client.getName());
+                                    handlerController.getBufferedWriter().newLine();
+                                    handlerController.getBufferedWriter().flush();
+                                }
                             }
                         }
+                        break;
+                    }
+                    case "Sign up":{
+                        String name = bufferedReader.readLine();
+                        String username = bufferedReader.readLine();
+                        String password = bufferedReader.readLine();
+                        String email = bufferedReader.readLine();
+
+                        Client clientSignUp = new Client(name, username, password, email);
+                        clientSignUp.setLogin(false);
+                        String result = ClientController.SignUp(clientSignUp);
+
+                        bufferedWriter.write(result);
+                        bufferedWriter.newLine();
+                        bufferedWriter.flush();
+
                         break;
                     }
                     case "Get id user":{

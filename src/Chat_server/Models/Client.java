@@ -25,6 +25,14 @@ public class Client {
         if (isLogin) this.isLogin = true;
         else this.isLogin = false;
     }
+
+    public Client(String name, String username, String password, String email) {
+        this.name = name;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+    }
+
     public Client(){}
     public String getName() {
         return name;

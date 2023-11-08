@@ -5,6 +5,7 @@ import Chat_client.Models.ServerData;
 import Chat_client.Models.Client;
 import Chat_client.Views.Login;
 import Chat_client.Views.MainChatView;
+import Chat_client.Views.SignUp;
 
 import java.io.*;
 import java.net.InetSocketAddress;
@@ -53,7 +54,30 @@ public class SocketController {
                 rs = Login(account.getUsername(), account.getPassword());
             }
             else if (select == 2) {
-                // đăng kí
+                SignUp account = new SignUp();
+                try {
+                    bufferedWriter.write("Sign up");
+                    bufferedWriter.newLine();
+                    bufferedWriter.write(account.getClient().getName());
+                    bufferedWriter.newLine();
+                    bufferedWriter.write(account.getClient().getUsername());
+                    bufferedWriter.newLine();
+                    bufferedWriter.write(account.getClient().getPassword());
+                    bufferedWriter.newLine();
+                    bufferedWriter.write(account.getClient().getEmail());
+                    bufferedWriter.newLine();
+                    bufferedWriter.flush();
+
+                    String SignUpResult = bufferedReader.readLine();
+                    if(SignUpResult.equals("User name existed")){
+                        System.out.println("User name đã tồn tại");
+                    } else if (SignUpResult.equals("Sign up success")) {
+                        System.out.println("Bạn đã đăng kí thành công, mời bạn đăng nhập lại.");
+                    }
+                    rs = false;
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
             else rs = false;
         }
@@ -65,8 +89,8 @@ public class SocketController {
         }
         getOnlineUserss();
         MainChatView mainChatView = new MainChatView(connectedServer, onlineUsers);
-        mainChatView.updateServerData();
-        mainChatView.updateUserOnlineList(onlineUsers);
+//        mainChatView.updateServerData();
+//        mainChatView.updateUserOnlineList(onlineUsers);
 
         new Thread(new Runnable() {
             @Override
@@ -79,10 +103,9 @@ public class SocketController {
                             throw new IOException();
                         switch (header) {
                             case "new user online": {
-                                String Id_user = "không", Name_user = "không";
-                                Id_user = bufferedReader.readLine();
-                                Name_user = bufferedReader.readLine();
-                                System.out.println(Id_user + " +++ " + Name_user);
+                                connectedServer.setConnectAccountCount(Integer.parseInt(bufferedReader.readLine()));
+                                String Id_user = bufferedReader.readLine();
+                                String Name_user = bufferedReader.readLine();
                                 Client clientVari = new Client(Id_user, Name_user);
                                 onlineUsers.add(clientVari);
                                 mainChatView.updateServerData();

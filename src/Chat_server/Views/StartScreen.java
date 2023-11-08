@@ -37,8 +37,8 @@ public class StartScreen {
     public static void updateClient(){
         System.out.println("Danh sách user hiện đang online:");
         System.out.println("Tên client:");
-        for(Client client : SocketController.getClientInfors()){
-            System.out.println(client.getName() + " +++ " + client.getPort());
+        for(HandlerController client : SocketController.getClientHandlers()){
+            System.out.println(client.getClient().getName() + " +++ " + client.getPort());
         }
     }
     public static boolean checkConnectedUser(){

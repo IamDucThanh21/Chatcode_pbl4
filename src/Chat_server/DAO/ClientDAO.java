@@ -75,6 +75,22 @@ public class ClientDAO extends connectMySQL{
         }
         return "Login-fail";
     }
+    public static boolean SignUp(Client client){
+        try{
+            Connection conn = connectSQL();
+            String sql = "INSERT INTO user(ID_user, Name, username, password, email, isLogin) VALUES ('" + client.getId() + "'" +
+                                                                                                        ",'" + client.getName() + "'" +
+                                                                                                        ",'" + client.getUsername() + "'" +
+                                                                                                        ",'" + client.getPassword() + "'" +
+                                                                                                        ",'" + client.getEmail() + "'" +
+                                                                                                        ",'" + client.isLogin() + "')";
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            return true;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public static boolean CheckLogin(String idUser){
         try{
             Connection conn = connectSQL();

@@ -9,6 +9,7 @@ import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class SocketController {
@@ -61,7 +62,6 @@ public class SocketController {
 
                         HandlerController handlerController = new HandlerController(clientSocket);
                         handlerController.start();
-
                     } while (serverSocket != null && !serverSocket.isClosed());
                 } catch (IOException e) {
                     System.out.println("Server or client socket closed");

@@ -28,6 +28,24 @@ public class ClientController{
             return result;
         }
     }
+    public static String SignUp(Client client){
+        String id_last = "";
+        for (HandlerController handlerController : SocketController.getClientHandlers()){
+            if(client.getUsername().equals(handlerController.getClient().getUsername())){
+                return "User name existed";
+            }
+            id_last = handlerController.getClient().getId();
+        }
+        int numUser = Integer.parseInt(id_last.substring(2));
+        String ID_newUser = "US";
+        numUser++;
+        if(numUser < 10) ID_newUser += "0" + numUser;
+        else ID_newUser += numUser;
+        client.setId(ID_newUser);
+
+        boolean result = ClientDAO.SignUp(client);
+        return "Sign up success";
+    }
     public static boolean checkClientIsLogin(String idUser){
         return ClientDAO.CheckLogin(idUser);
     }

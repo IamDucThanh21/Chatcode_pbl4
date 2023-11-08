@@ -8,6 +8,10 @@ public class Client {
     private String email;
     private boolean status; // tình trạng đang onl/off
 
+    public String getEmail() {
+        return email;
+    }
+
     public Client(String id, String name, String username, String password, String email, boolean status) {
         this.id = id;
         this.name = name;
@@ -16,6 +20,14 @@ public class Client {
         this.email = email;
         this.status = status;
     }
+
+    public Client(String name, String username, String password, String email) {
+        this.name = name;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+    }
+
     public Client(){}
 
     public Client(String id, String name) {

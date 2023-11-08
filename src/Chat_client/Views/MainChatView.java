@@ -33,9 +33,9 @@ public class MainChatView {
         // có 1 dãy các user đang online, nhập số để check muốn nhắn với user nào, vd: 1. Đức Thành
 
         updateUserOnlineList(OnlineUserList);
-        System.out.print("Nhập số của người muốn gửi: ");
-        int otherUser = sc.nextInt();
-        System.out.println(OnlineUserList.get(otherUser - 1).getId());
+//        System.out.print("Nhập số của người muốn gửi: ");
+//        int otherUser = sc.nextInt();
+//        System.out.println(OnlineUserList.get(otherUser - 1).getId());
         // Room foundRoom = Room.findPrivateRoom()
     }
     public void updateServerData(){
