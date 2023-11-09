@@ -3,9 +3,11 @@ package Chat_client.Controllers;
 import Chat_client.Models.Room;
 import Chat_client.Models.ServerData;
 import Chat_client.Models.Client;
+import Chat_client.Views.ConnectView;
 import Chat_client.Views.Login;
 import Chat_client.Views.MainChatView;
 import Chat_client.Views.SignUp;
+import Chat_server.Views.StartScreen;
 
 import java.io.*;
 import java.net.InetSocketAddress;
@@ -21,29 +23,31 @@ public class SocketController {
     BufferedWriter bufferedWriter;
     BufferedReader bufferedReader;
     Scanner sc = new Scanner(System.in);
-    // private ArrayList<Client> onlineUsers;
     public ArrayList<Room> allRooms;
 
     public ArrayList<Room> getAllRooms() {
         return allRooms;
     }
-
-    public SocketController(String ipAddress, int port){
-        // onlineUsers = new ArrayList<Client>();
+    public SocketController(){
+        ConnectView connectView = new ConnectView();
         allRooms = new ArrayList<Room>();
         client = new Client();
-        connectedServer = new ServerData(ipAddress, port);
+        connectedServer = new ServerData(connectView.getIpAddress(), connectView.getPort());
         try {
-            socket = new Socket(ipAddress, port);
+            socket = new Socket(connectView.getIpAddress(), connectView.getPort());
             InputStream is = socket.getInputStream();
             bufferedReader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
             OutputStream os = socket.getOutputStream();
             bufferedWriter = new BufferedWriter(new OutputStreamWriter(os, StandardCharsets.UTF_8));
+            StartALL();
         } catch (IOException e) {
             System.out.println("Không tồn tại server");
             System.exit(0);
             return;
         }
+    }
+    // bắt đầu mấy cái còn lại á
+    public void StartALL(){
         boolean rs =false;
         while (!rs){
             System.out.println("1. Đăng nhập");

@@ -10,13 +10,14 @@ public class connectMySQL {
             Class.forName("com.mysql.cj.jdbc.Driver");
             String url = "jdbc:mysql://localhost:3306/chat_tcp";
             String user = "root";
-            String password ="";
+            String password = "";
             Connection conn = DriverManager.getConnection(url, user, password);
 //            if (conn != null) {
 //                System.out.println("Connect success");
 //            }
             return conn;
-        } catch (ClassNotFoundException e) {
+        }
+        catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         } catch (SQLException e) {
             throw new RuntimeException(e);

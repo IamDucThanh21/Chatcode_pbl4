@@ -10,7 +10,16 @@ import java.util.Scanner;
 public class ConnectView {
     private static final long serialVersionUID = 1L;
     private SocketController socketController;
+    private String ipAddress;
+    private int port;
     private Scanner sc = new Scanner(System.in);
+
+    public String getIpAddress() {
+        return ipAddress;
+    }
+    public int getPort() {
+        return port;
+    }
     public ConnectView(){
         // hàm update ServerTable
         System.out.println("Lựa chọn các chức năng cần thiết:");
@@ -22,13 +31,10 @@ public class ConnectView {
         selection = sc.nextInt();
 
         if(selection == 1){
-            String ipAddress;
-            int port;
             System.out.print("Nhập địa chỉ ip: ");
-            ipAddress = sc.next();
+            this.ipAddress = sc.next();
             System.out.print("Nhập port      : ");
-            port = sc.nextInt();
-            socketController = new SocketController(ipAddress, port);
+            this.port = sc.nextInt();
         }
         else if(selection == 2){
             System.exit(0);

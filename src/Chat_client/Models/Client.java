@@ -63,6 +63,14 @@ public class Client {
         return password;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
     public void setPassword(String password) {
         this.password = password;
     }
@@ -71,7 +79,5 @@ public class Client {
         return status;
     }
 
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
+
 }
