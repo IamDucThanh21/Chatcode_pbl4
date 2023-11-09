@@ -21,7 +21,7 @@ public class SocketController {
     BufferedWriter bufferedWriter;
     BufferedReader bufferedReader;
     Scanner sc = new Scanner(System.in);
-    private ArrayList<Client> onlineUsers;
+    // private ArrayList<Client> onlineUsers;
     public ArrayList<Room> allRooms;
 
     public ArrayList<Room> getAllRooms() {
@@ -29,7 +29,7 @@ public class SocketController {
     }
 
     public SocketController(String ipAddress, int port){
-        onlineUsers = new ArrayList<Client>();
+        // onlineUsers = new ArrayList<Client>();
         allRooms = new ArrayList<Room>();
         client = new Client();
         connectedServer = new ServerData(ipAddress, port);
@@ -42,6 +42,7 @@ public class SocketController {
         } catch (IOException e) {
             System.out.println("Không tồn tại server");
             System.exit(0);
+            return;
         }
         boolean rs =false;
         while (!rs){
@@ -85,11 +86,11 @@ public class SocketController {
         try {
             connectedServer.setConnectAccountCount(Integer.parseInt(bufferedReader.readLine()));
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         getOnlineUserss();
-        MainChatView mainChatView = new MainChatView(connectedServer, onlineUsers);
-//        mainChatView.updateServerData();
+        MainChatView mainChatView = new MainChatView(connectedServer);
+        updateUserOnlineList();
 //        mainChatView.updateUserOnlineList(onlineUsers);
 
         new Thread(new Runnable() {
@@ -103,23 +104,27 @@ public class SocketController {
                             throw new IOException();
                         switch (header) {
                             case "new user online": {
-                                connectedServer.setConnectAccountCount(Integer.parseInt(bufferedReader.readLine()));
                                 String Id_user = bufferedReader.readLine();
                                 String Name_user = bufferedReader.readLine();
                                 Client clientVari = new Client(Id_user, Name_user);
-                                onlineUsers.add(clientVari);
-                                mainChatView.updateServerData();
-                                mainChatView.updateUserOnlineList(onlineUsers);
+                                connectedServer.addClient(clientVari);
+                                updateUserOnlineList();
                                 break;
                             }
                             case "user quit": {
                                 String Id_user = bufferedReader.readLine();
                                 String Name_user = bufferedReader.readLine();
-                                Client clientVari = new Client(Id_user, Name_user);
-                                System.out.println(Id_user + " quit");
-                                onlineUsers.remove(clientVari);
-                                mainChatView.updateServerData();
-                                mainChatView.updateUserOnlineList(onlineUsers);
+
+                                System.out.println(Name_user + " đã rời khỏi cuộc trò chuyện");
+
+                                for(Client client1 : connectedServer.getClients()){
+                                    if(client1.getId().equals(Id_user)){
+                                        connectedServer.removeClient(client1);
+                                        break;
+                                    }
+
+                                }
+                                updateUserOnlineList();
 //                            for (Room room : allRooms) {
 //                                if (room.users.contains(whoQuit)) {
 //                                    Main.mainScreen.addNewMessage(room.id, "notify", whoQuit, "Đã thoát ứng dụng");
@@ -145,12 +150,12 @@ public class SocketController {
         }).start();
     }
     public void getOnlineUserss(){
-        for(int i = 0; i < this.connectedServer.getConnectAccountCount(); i++ ){
+        for(int i = 0; i < connectedServer.getConnectAccountCount(); i++ ){
             try {
                 String id_user = bufferedReader.readLine();
                 String NameUser = bufferedReader.readLine();
                 Client clientVari = new Client(id_user, NameUser);
-                onlineUsers.add(clientVari);
+                connectedServer.addClient(clientVari);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -187,6 +192,13 @@ public class SocketController {
         }
         return false;
     }
+    public void updateUserOnlineList(){
+        System.out.println("Số user đang online: " + connectedServer.getNumClients());
+        int i = 1;
+        for(Client client : connectedServer.getClients()){
+            System.out.println(i++ + ". " + client.getName());
+        }
+    }
 
     public String GetIdUser(String username, String password){
         String id ="";
@@ -206,9 +218,6 @@ public class SocketController {
         return id;
     }
     // lấy những user khác đang online trên server
-    public int getUserOnline(){
-        return connectedServer.getConnectAccountCount();
-    }
     public static Socket serverOnline(String ip, int port) {
         try {
             Socket s = new Socket();

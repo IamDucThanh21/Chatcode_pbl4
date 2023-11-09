@@ -122,8 +122,8 @@ public class HandlerController extends Thread{
                                         continue;
                                     handlerController.getBufferedWriter().write("new user online");
                                     handlerController.getBufferedWriter().newLine();
-                                    handlerController.getBufferedWriter().write("" + (SocketController.getClientSize() - 1));
-                                    handlerController.getBufferedWriter().newLine();
+//                                    handlerController.getBufferedWriter().write("" + (SocketController.getClientSize() - 1));
+//                                    handlerController.getBufferedWriter().newLine();
                                     handlerController.getBufferedWriter().write(this.client.getId());
                                     handlerController.getBufferedWriter().newLine();
                                     handlerController.getBufferedWriter().write(this.client.getName());
@@ -173,18 +173,18 @@ public class HandlerController extends Thread{
         }catch (IOException ex){
             if(!StartScreen.checkConnectedUser() && client!=null){
                 try{
-//                    for (Client clientVari : SocketController.getClients()) {
-//                        if (!(clientVari.getId()).equals(client.getId())) {
-//                            clientVari.bufferedWriter.write("user quit");
-//                            clientVari.bufferedWriter.newLine();
-//                            clientVari.bufferedWriter.write(client.getId());
-//                            clientVari.bufferedWriter.newLine();
-//                            clientVari.bufferedWriter.write(client.getName());
-//                            clientVari.bufferedWriter.newLine();
-//                            clientVari.bufferedWriter.flush();
-//                        }
-//                    }
-//
+                    for (HandlerController clientQuit : SocketController.getClientHandlers()) {
+                        if (!(clientQuit.getClient().getId()).equals(this.client.getId())) {
+                            clientQuit.getBufferedWriter().write("user quit");
+                            clientQuit.getBufferedWriter().newLine();
+                            clientQuit.getBufferedWriter().write(client.getId());
+                            clientQuit.getBufferedWriter().newLine();
+                            clientQuit.getBufferedWriter().write(client.getName());
+                            clientQuit.getBufferedWriter().newLine();
+                            clientQuit.getBufferedWriter().flush();
+                        }
+                    }
+
 //                    for (Room room : Main.socketController.allRooms)
 //                        room.users.remove(thisClient.userName);
                     socketHandler.close();

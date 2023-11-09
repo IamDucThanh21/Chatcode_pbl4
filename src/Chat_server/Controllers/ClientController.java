@@ -30,11 +30,11 @@ public class ClientController{
     }
     public static String SignUp(Client client){
         String id_last = "";
-        for (HandlerController handlerController : SocketController.getClientHandlers()){
-            if(client.getUsername().equals(handlerController.getClient().getUsername())){
+        for (Client clientL : ClientDAO.getClients()){
+            if(client.getUsername().equals(clientL.getUsername())){
                 return "User name existed";
             }
-            id_last = handlerController.getClient().getId();
+            id_last = clientL.getId();
         }
         int numUser = Integer.parseInt(id_last.substring(2));
         String ID_newUser = "US";

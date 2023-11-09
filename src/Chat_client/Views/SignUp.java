@@ -17,11 +17,15 @@ public class SignUp{
 
     Scanner sc = new Scanner(System.in);
     public SignUp(){
-        this.NameUser = sc.next("NameUser: ");
-        this.username = sc.next("Username: ");
-        this.password = sc.next("Password: ");
-        this.email = sc.next("Email: ");
-        client = new Client(NameUser, username, password, email);
+        System.out.print("NameUser: ");
+        this.NameUser = sc.next();
+        System.out.print("Username: ");
+        this.username = sc.next();
+        System.out.print("Password: ");
+        this.password = sc.next();
+        System.out.print("Email: ");
+        this.email = sc.next();
+        this.client = new Client(NameUser, username, password, email);
     }
 
 }
