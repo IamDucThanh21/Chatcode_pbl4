@@ -6,5 +6,7 @@ import Chat_server.Models.Client;
 import java.util.Scanner;
 
 public class ClientController {
-
+    public static void main(String[] args) {
+        System.out.println();
+    }
 }
