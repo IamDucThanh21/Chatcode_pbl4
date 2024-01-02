@@ -1,5 +1,6 @@
 package Chat_server.Controllers;
 
+import Chat_client.Models.Room;
 import Chat_server.DAO.ClientDAO;
 import Chat_server.Models.Client;
 import Chat_server.Views.StartScreen;
@@ -150,6 +151,47 @@ public class HandlerController extends Thread{
 
                         break;
                     }
+//                    case "request create room": {
+//                        String id_user = bufferedReader.readLine();
+//                        String roomType = bufferedReader.readLine();
+////                        int userCount = Integer.parseInt(bufferedReader.readLine());
+////                        ArrayList<String> users = new ArrayList<String>();
+////                        for (int i = 0; i < userCount; i++)
+////                            users.add(bufferedReader.readLine());
+//                        // tìm kiếm user
+//
+//                        Room newRoom = new Room(id_user, users);
+//                        Main.socketController.allRooms.add(newRoom);
+//
+//                        for (int i = 0; i < userCount; i++) {
+//                            BufferedWriter currentClientSender = Client.findClient(Main.socketController.connectedClient,
+//                                    users.get(i)).sender;
+//                            currentClientSender.write("new room");
+//                            currentClientSender.newLine();
+//                            currentClientSender.write("" + newRoom.id);
+//                            currentClientSender.newLine();
+//                            currentClientSender.write(thisClient.userName);
+//                            currentClientSender.newLine();
+//                            if (roomType.equals("private")) {
+//                                // private chat thì tên room của mỗi người sẽ là tên của người kia
+//                                currentClientSender.write(users.get(1 - i)); // user 0 thì gửi 1, user 1 thì gửi 0
+//                                currentClientSender.newLine();
+//                            } else {
+//                                currentClientSender.write(roomName);
+//                                currentClientSender.newLine();
+//                            }
+//                            currentClientSender.write(roomType);
+//                            currentClientSender.newLine();
+//                            currentClientSender.write("" + users.size());
+//                            currentClientSender.newLine();
+//                            for (String userr : users) {
+//                                currentClientSender.write(userr);
+//                                currentClientSender.newLine();
+//                            }
+//                            currentClientSender.flush();
+//                        }
+//                        break;
+//                    }
                     case "Get id user":{
                         String id = client.getId();
                         bufferedWriter.write(id);

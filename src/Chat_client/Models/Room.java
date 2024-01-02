@@ -5,6 +5,8 @@ import java.util.ArrayList;
 public class Room {
     private int id;
     private String name;
+    private String id_user;
+
     private String type; //kiểu là chat 1 1 hay chat room
     private ArrayList<Client> clients;
     private ArrayList<MessageData> messageDatas;
@@ -73,6 +75,10 @@ public class Room {
 
     public ArrayList<MessageData> getMessageDatas() {
         return messageDatas;
+    }
+
+    public String getId_user() {
+        return id_user;
     }
 
     public void setMessageDatas(ArrayList<MessageData> messageDatas) {

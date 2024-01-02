@@ -39,13 +39,7 @@ public class SocketController {
     public static int getClientSize(){
         return clients.size();
     }
-    public static ArrayList<Client> getClientInfors(){
-        ArrayList<Client> clientList= new ArrayList<Client>();
-        for(HandlerController handlerController : clients){
-            clientList.add(handlerController.getClient());
-        }
-        return clientList;
-    }
+
     public SocketController(){
         clients = new ArrayList<HandlerController>();
         rooms = new ArrayList<Room>();

@@ -23,14 +23,8 @@ public class SocketController {
     BufferedWriter bufferedWriter;
     BufferedReader bufferedReader;
     Scanner sc = new Scanner(System.in);
-    public ArrayList<Room> allRooms;
-
-    public ArrayList<Room> getAllRooms() {
-        return allRooms;
-    }
     public SocketController(){
         ConnectView connectView = new ConnectView();
-        allRooms = new ArrayList<Room>();
         client = new Client();
         connectedServer = new ServerData(connectView.getIpAddress(), connectView.getPort());
         try {
@@ -118,7 +112,7 @@ public class SocketController {
                             case "user quit": {
                                 String Id_user = bufferedReader.readLine();
                                 String Name_user = bufferedReader.readLine();
-
+                                System.out.println(Id_user);
                                 System.out.println(Name_user + " đã rời khỏi cuộc trò chuyện");
 
                                 for(Client client1 : connectedServer.getClients()){
@@ -232,23 +226,31 @@ public class SocketController {
             return null;
         }
     }
-    public void createPrivateRoom(String otherUser) {
+    public void createPrivateRoom(String id_user) {
         try {
             bufferedWriter.write("request create room");
             bufferedWriter.newLine();
-            bufferedWriter.write(otherUser); // room name
+            bufferedWriter.write(id_user); // room name
             bufferedWriter.newLine();
-            bufferedWriter.write("private"); // room name
+            bufferedWriter.write("private"); // room type
             bufferedWriter.newLine();
-            bufferedWriter.write("2");
-            bufferedWriter.newLine();
+//            bufferedWriter.write("2");
+//            bufferedWriter.newLine();
             bufferedWriter.write(client.getId());
             bufferedWriter.newLine();
-            bufferedWriter.write(otherUser);
+            bufferedWriter.write(id_user);
             bufferedWriter.newLine();
             bufferedWriter.flush();
         } catch (IOException ex) {
             ex.printStackTrace();
+        }
+    }
+    public void onClickCheckRoom(){
+        // khi chọn 1 user bất kì thì sẽ trả về id của user đó
+        String id_user ="";
+        Room founRoom = RoomController.findPrivateRoom(connectedServer.getRooms(), id_user);
+        if(founRoom == null){
+            createPrivateRoom(id_user);
         }
     }
 }
